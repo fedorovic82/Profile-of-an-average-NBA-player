@@ -5,27 +5,22 @@
 
 # # <font color='coral'>Analysis NBA Season '18-'19 - This is the Profile of an Average NBA Player</font>
 
-# In this kernel im searching for the answer on the question: what's the profile of an average NBA player in this years regular NBA season ('18-'19)
+# In this small projecr im searching for the answer on the question: what's the profile of an average NBA player in this years regular NBA season ('18-'19)
 # 
-# I analyze and visualize the variables weight, age, height and team, take the averages of these values, combine them and put this data over the dataset. All players of the NBA season '18 -'19 are included in this dataset. This way we can tell which player comes closest to the average profile of a NBA player,
+# I analyze and visualize the variables weight, age, height and team in a dataset all players of the NBA season '18 -'19 are included in. This way we can tell which player comes closest to the average profile of a NBA player.
 # 
 # 
 # ### Index
 # 
 # #### 1. Player Profile
-# 
 # 1.1 Player profile - Age
-# 
 # 1.2 Player profile - height
-# 
 # 1.3 Player profile - weight
 # 
 # #### 2. Teams
-# 
 # 2.1 Number of players in Teams
 # 
 # #### 3. The profile of an average NBA player
-# 
 # 3.1 Which player comes closest to the average profile of a NBA player?
 
 # ## <font color='coral'>Libraries & Data Import</font>
