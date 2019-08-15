@@ -1,0 +1,244 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+# ![Image of Yaktocat](https://cdn.nba.net/nba-drupal-prod/2018-08/NBA-2019ScheduleRelease-v2.jpg)
+
+# # <font color='coral'>Analysis NBA Season '18-'19 - This is the Profile of an Average NBA Player</font>
+
+# In this kernel im searching for the answer on the question: what's the profile of an average NBA player in this years regular NBA season ('18-'19)
+# 
+# I analyze and visualize the variables weight, age, height and team, take the averages of these values, combine them and put this data over the dataset. All players of the NBA season '18 -'19 are included in this dataset. This way we can tell which player comes closest to the average profile of a NBA player,
+# 
+# 
+# ### Index
+# 
+# #### 1. Player Profile
+# 
+# 1.1 Player profile - Age
+# 
+# 1.2 Player profile - height
+# 
+# 1.3 Player profile - weight
+# 
+# #### 2. Teams
+# 
+# 2.1 Number of players in Teams
+# 
+# #### 3. The profile of an average NBA player
+# 
+# 3.1 Which player comes closest to the average profile of a NBA player?
+
+# ## <font color='coral'>Libraries & Data Import</font>
+
+# In[2]:
+
+
+import numpy as np 
+import pandas as pd 
+from matplotlib import pyplot as plt
+import seaborn as sns
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+from scipy.stats import norm
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+
+
+# In[3]:
+
+
+df = pd.read_csv('/users/fedorslegtenhorst/downloads/export_nbastats2018-2019.csv')
+
+
+# In[4]:
+
+
+print('This dataset has ' + str(df.shape[0]) + ' rows, and ' + str(df.shape[1]) + ' columns')
+
+
+# In[5]:
+
+
+df.head()
+
+
+# # <font color='coral'>1. Player Profiles</font>
+
+# ## 1.1 Player Profiles - Age
+
+# - Mean age of NBA players in season 18-19 is almost 26 years old (25y, 11 months)
+# - 10% of all players is 23 years old.
+# - 53% of the players are between 21 and 26 years old.
+# - The youngest player is 19
+# - The oldest is 42
+
+# In[108]:
+
+
+df['Age'].value_counts()
+
+
+# In[109]:
+
+
+df['Age'].value_counts(normalize=True) * 100
+
+
+# In[18]:
+
+
+df['Age'].describe()
+
+
+# In[43]:
+
+
+sns.set_style('whitegrid')  
+
+
+# In[44]:
+
+
+plt.figure(figsize=(16,4))
+sns.barplot(x=df['Age'].value_counts().index,
+            y=df['Age'].value_counts().values, color="coral", saturation=2)
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.title('Show of Age of the players season 18-19')
+plt.show()
+
+
+# In[45]:
+
+
+plt.figure(figsize=(16, 4))
+sns.countplot(df.Age.dropna(), order = df.Age.value_counts().iloc[:20].index, color="coral", saturation=2)
+plt.xlabel('Age')
+plt.ylabel('Frequency')
+plt.title('Top 20 Age of NBA players season 18-19')
+plt.show()
+
+
+# ## 1.2 Player Profiles - Height
+
+# - Mean height of NBA player in season 18-19 is 78,9 inch (200,4 cm)
+# - Min measured height is 69 inch (172,7 cm)
+# - Max measured height is 87 inch (220,9 cm)
+
+# In[54]:
+
+
+df['Height'].describe()
+
+
+# In[58]:
+
+
+plt.figure(figsize=(16,4))
+sns.lineplot(x=df['Height'].value_counts().index,
+              y=df['Height'].value_counts().values)
+plt.xlabel('Height of the player in Inches')
+plt.ylabel('Frequency')
+plt.title('Height of NBA Players season 18-19')
+plt.gca().get_lines()[0].set_color("coral")
+plt.show()
+
+
+# In[60]:
+
+
+plt.figure(figsize=(16,4))
+sns.boxplot(df['Height'], color="coral", saturation=2)
+plt.xlabel('Height of the player in Inches')
+plt.title('Height of NBA Players season 18-19')
+plt.show()
+
+
+# ## 1.3 Player Profiles - Weight
+
+# - Mean weight of NBA player in season 18-19 is 217,5 pounds (108,7 kg)
+# - Min measured height is 166 pounds (83 kg)
+# - Max measured height is 290 pounds (145 kg)
+
+# In[61]:
+
+
+df['Weight'].describe()
+
+
+# In[76]:
+
+
+plt.figure(figsize=(16,4))
+sns.barplot(x=df['Weight'].value_counts().index,
+            y=df['Weight'].value_counts().values, color="coral")
+plt.xlabel('Weight of the Player in Pounds')
+plt.ylabel('Frequency')
+plt.title('Weight of the players season 18-19 in Pounds')
+plt.xticks(rotation=90)
+plt.show()
+
+
+# In[111]:
+
+
+sns.set_color_codes()
+Overallfig, axs = plt.subplots(ncols = 3, figsize=(16, 4))
+
+sns.distplot(df.Weight.dropna(), kde=False, ax=axs[0], color="coral")
+second_plt = sns.distplot(df.Weight.dropna()[df.Weight < 280], kde=False, ax=axs[1], color="coral")
+sns.boxplot(df.Weight, ax=axs[2], orient = 'v', color="coral", saturation=2)
+
+second_plt.set_yscale('log')
+
+
+# # <font color='coral'>2. Teams</font>
+
+# ## 2.1 Number of players in Teams
+
+# - There are 51 free agents (players without a contract with team)
+# - Atlanta Hawks have the most registered players in the 18-19 NBA season: 21. 
+# - Miami Heat has the least number of players: 11
+# - The average player is contracted by one of the NBA teams ;)
+
+# In[96]:
+
+
+df['Team'].value_counts()
+
+
+# In[95]:
+
+
+plt.figure(figsize=(16,4))
+sns.barplot(x=df['Team'].value_counts().index,
+            y=df['Team'].value_counts().values, color="coral", saturation=2)
+plt.xlabel('Team')
+plt.ylabel('Amount of players in team')
+plt.title('Number of players in Team')
+plt.xticks(rotation=90)
+plt.show()
+
+
+# # <font color='coral'>3. What's the profile of an average NBA player</font>
+
+# We select the players database on our four mean values
+# 1. Height is around 78,9 inch
+# 2. Age is almost 25,9 years
+# 3. Weight is 217,7 pounds
+# 4. Contracted by an NBA team
+
+# In[133]:
+
+
+array = [77, 78, 79]
+array1 = [216, 217, 218]
+df.loc[(df['Age'] == 26) & df['Height'].isin(array) & df['Weight'].isin(array1)] 
+
+
+# ## 3.1 Which player comes closest to the average profile of a NBA player?
+
+# Mitch Creek is the most Average Player of the NBa based on our average player profile statistics!
+# Mitch Creek is 26 years old, 77 inch long, weighs 216 pounds en was contracted by the Brooklyn Nets this year.
+
+# ![Image of Yaktocat](https://basketballforever.com/wp-content/uploads/2019/01/creek-nets-660x400.png)
