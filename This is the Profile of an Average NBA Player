@@ -42,7 +42,7 @@ from scipy import stats
 # In[3]:
 
 
-df = pd.read_csv('/users/fedorslegtenhorst/downloads/export_nbastats2018-2019.csv')
+df = pd.read_csv('/users/fedor/downloads/export_nbastats2018-2019.csv')
 
 
 # In[4]:
